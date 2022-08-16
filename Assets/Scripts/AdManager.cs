@@ -13,7 +13,7 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
 #if UNITY_ANDROID
     private string gameID = "4881981";
 #elif UNITY_IOS
-    private string gameID = "4881981";
+    private string gameID = "4881980";
 #endif
 
   // Start is called before the first frame update
@@ -58,6 +58,7 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
                 break;
 
             case ShowResult.Failed:
+                Debug.LogWarning(ShowResult.Failed);
                 Debug.LogWarning("Ad Failed");
                 break;
         }
