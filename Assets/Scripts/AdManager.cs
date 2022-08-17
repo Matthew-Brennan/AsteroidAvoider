@@ -1,22 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class AdManager : MonoBehaviour, IUnityAdsListener
+public class AdManager : MonoBehaviour, IUnityAdsInitializationListener
 {
-    [SerializeField] private bool testMode = true;
     public static AdManager Instance;
 
-    private GameOverHandler gameOverHandler;
+    [SerializeField] string _androidGameId = "4881981";
+    [SerializeField] string _iOSGameId = "4881980";
+    [SerializeField] bool _testMode = true;
 
-#if UNITY_ANDROID
-    private string gameID = "4881981";
-#elif UNITY_IOS
-    private string gameID = "4881980";
-#endif
+    private string _gameId;
 
-  // Start is called before the first frame update
+
+
     void Awake()
     {
         if(Instance != null && Instance != this)
@@ -25,52 +21,34 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         }
         else
         {
-            Instance = this;
+            Instance=this;
             DontDestroyOnLoad(gameObject);
-
-            Advertisement.AddListener(this);
-            Advertisement.Initialize(gameID,testMode);
         }
+        InitializeAds();
+    string _adUnitId = null;
+#if UNITY_IOS
+        _adUnitId=_iOSAdUnitId;
+#elif UNITY_ANDROID
+        _adUnitId=_androidGameId;
+#endif
+
     }
 
-    public void ShowAd(GameOverHandler gameOverHandler)
+    public void InitializeAds()
     {
-        this.gameOverHandler = gameOverHandler;
-
-        Advertisement.Show("Rewarded_Video");
+        _gameId = (Application.platform == RuntimePlatform.IPhonePlayer)
+            ? _iOSGameId
+            : _androidGameId;
+        Advertisement.Initialize(_gameId, _testMode, this);
     }
 
-    public void OnUnityAdsDidError(string message)
+    public void OnInitializationComplete()
     {
-        Debug.Log($"Unity Ads Error: {message}");
+        Debug.Log("Unity Ads initialization complete.");
     }
 
-    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
-        switch(showResult)
-        {
-            case ShowResult.Finished:
-                gameOverHandler.ContinueGame();
-                break;
-
-            case ShowResult.Skipped:
-                Debug.LogWarning("Ad Skipped");
-                break;
-
-            case ShowResult.Failed:
-                Debug.LogWarning(ShowResult.Failed);
-                Debug.LogWarning("Ad Failed");
-                break;
-        }
-    }
-
-    public void OnUnityAdsDidStart(string placementId)
-    {
-        Debug.Log($"Unity Ads Started");
-    }
-
-    public void OnUnityAdsReady(string placementId)
-    {
-        Debug.Log($"Unity Ads Ready");
+        Debug.Log($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
     }
 }
