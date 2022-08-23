@@ -19,7 +19,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "1.15.18",
+      "version": "1.17.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -111,7 +111,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.core": {
-      "version": "1.4.0",
+      "version": "1.4.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -122,7 +122,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.mediation": {
-      "version": "file:F:/Program Files (x86)/Unity/Unity Projects/3D Game Dev Course/DrivingGame/98231542a8b0e65db4a115744545fdbf17d77371.tgz",
+      "version": "file:../98231542a8b0e65db4a115744545fdbf17d77371.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
